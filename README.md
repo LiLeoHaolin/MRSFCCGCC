@@ -4,37 +4,24 @@
 
 This repository contains computing codes for the paper "A Modified Random Survival Forest for Improving Prediction Accuracy in Case-Cohort and Generalized Case-Cohort Studies". 
 
+## Naming Convention 
+
+### Folders
+
+This repo contains the following folders, corresponding to the simulation codes for reproducing Section 4 of the paper. The names and descriptions of the folders are as follows,
+
+* *data generation* - this folder contains the code for simulating analysis datasets across 12 simulation settings considered in the Section 4 of the paper.
+* *analysis* - this folder contains the analysis code for three predictive models compared in the paper: the naive, weighted, and proposed approaches.
+* *installation* - this folder contains the installation of the proposed splitting rule discussed in the paper (see detailed instruction below). 
+* *summary* -this folder contains the code for summarizing simulation results. Same code can be used for hyperparameter tuning in general settings.
+
 ## Installation Instruction for the Proposed Method
 
 * *Step 1* - Download the package source version by using `download.packages("randomForestSRC", destdir = ".", type = "source")`, which will create a file like 'randomForestSRC_3.6.0.tar.gz'
 * *Step 2* - Extract the source using 'untar("randomForestSRC_3.6.0.tar.gz")', This creates a folder: 'randomForestSRC/'
 
 
-## Naming Convention 
 
-### Folders
-
-This repo contains the following folders, corresponding to the simulation codes for reproducing Tables 2 and 3 of the main text. The names and descriptions of the folders are as follows,
-
-* *CC_low_lin* - case-cohort design, low dimensional, linear covariate effect.
-* *CC_low_non* - case-cohort design, low dimensional, nonlinear covariate effect.
-* *CC_high_lin* - case-cohort design, high dimensional, linear covariate effect.
-* *CC_high_non* - case-cohort design, high dimensional, nonlinear covariate effect.
-* *GCC_low_lin* - generalized case-cohort design, low dimensional, linear covariate effect.
-* *GCC_low_non* - generalized case-cohort design, low dimensional, nonlinear covariate effect.
-* *GCC_high_lin* - generalized case-cohort design, high dimensional, linear covariate effect.
-* *GCC_high_non* - generalized case-cohort design, high dimensional, nonlinear covariate effect. 
-
-### Files
-
-In each folder, we include the computing codes for all the prediction methods discussed in the paper. The names and descriptions of the files are as follows,
-
-* *dat_gen.r* - the code for data generation.
-* *expensive_only.r* - the super learner using the full cohort with inexpensive covariates only.
-* *full_cohort.r* - the super learner assuming the full cohort with available expensive covariates for all subjects.
-* *naive.r* - the naive super learner, with the same candidate learners as the proposed super learner but without considering design weights in the empirical risk. 
-* *proposed.r* - the proposed super learner.
-* *SRS.r* - the super learner using a study sample with expensive covariates assembled through an SRS with the same sample size as the case-cohort/generalized case-cohort design.
 
 ## References
 
