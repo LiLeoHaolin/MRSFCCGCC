@@ -1,0 +1,118 @@
+## Prerequisites ##
+
+library(MASS)
+
+## Simulation setting ##
+
+#path.test <- "C:/Users/Haolin Li/Desktop/Dissertation/05_project2/02_simulation/"
+#path.cc <- "C:/Users/Haolin Li/Desktop/Dissertation/05_project2/02_simulation/"
+
+path.test <- "/nas/longleaf/home/haolin/dissertation2/G_tree2_hi/data/"
+path.cc <- "/nas/longleaf/home/haolin/dissertation2/G_tree2_hi/data/"
+
+gamma.weibull = 1
+p = 20
+p.full = 6
+n = 1000
+q = 0.1
+q.case = 0.5
+nsim = 100
+corr = 0.2
+beta = matrix(c(rep(0,p.full-2), c(0.1, 0.1, 0.3, -0.3, -0.2, -0.3, 0.01, -0.01, 0.25, -0.25), rep(0,p-p.full-8)), nrow=p)
+
+cenc = rep(0, nsim)
+
+## Data generation (training) ##
+
+for (j in 1:nsim){
+  cat(j)
+  
+  ar1_cor <- function(n, rho) {
+    exponent <- abs(matrix(1:n - 1, nrow = n, ncol = n, byrow = TRUE) - 
+                      (1:n - 1))
+    rho^exponent
+  }
+  
+  
+  X1 = c(rbinom(n = 2*n*p.full, size = 1, prob=0.5))
+  X1 = matrix(X1, nrow = 2*n)
+  X2 = as.matrix(mvrnorm(n = 2*n, matrix(0, nrow = (p-p.full), ncol = 1), ar1_cor((p-p.full), corr)))
+  X = cbind(X1, X2)
+  
+  
+  true.lin.pred <- 0.8*(X[,p.full]>0) -2*(X[,p.full+1]<0) + 0.5*(X[,p.full+2]>0)*(X[,p.full+4]>0)*(X[,p.full+5]>0)+3.1
+  
+  
+  
+  v <- runif(n=2*n)
+  Tlat <- (- log(v) / (1* exp(true.lin.pred)))^(1 / gamma.weibull)
+ 
+  C = runif(2*n, min = 0, max = 0.03) # censoring times
+
+  end <- rep(0.0162, 2*n)
+  time <- pmin(Tlat, C, end) # follow-up times
+  
+  status <- as.numeric(Tlat == time) #event indicators
+  
+  
+  dat.pre = data.frame(X, status, time)
+  
+  dat = dat.pre[1:n,]
+  test = dat.pre[(n+1):(2*n),]
+
+  dat$subid = 1:n
+  test$subid = 1:n
+  
+  dat$sc = sample(c(1:0), n, replace=T, prob = c(q,1-q))
+  q.comp = 0.145
+  dat$r = sample(c(1:0), n, replace=T, prob = c(q.comp,1-q.comp))
+  dat$sc.case = sample(c(1:0), n, replace=T, prob = c(q.case,1-q.case))
+ 
+  cenc[j] = table(dat$status)[1]/n
+  
+  c <- subset(dat, select = -c(sc, r))
+  #write.csv(c,file=paste0(path.c, 'dat', j, '.csv'), row.names = F)
+  
+  sc <- subset(dat, select = -c(r))
+  for (m in 1:n){
+    if (sc$sc[m]==1){
+      sc[m,c((p.full+1):p)] = sc[m,c((p.full+1):p)]
+    }else{
+      sc[m,c((p.full+1):p)] = NA
+    }
+  }
+  sc <- subset(sc, select = -c(sc))
+  #write.csv(sc,file=paste0(path.sc, 'dat', j, '.csv'), row.names = F)
+  
+  r <- subset(dat, select = -c(sc))
+  for (m in 1:n){
+    if (r$r[m]==1){
+      r[m,c((p.full+1):p)] = r[m,c((p.full+1):p)]
+    }else{
+      r[m,c((p.full+1):p)] = NA
+    }
+  }
+  r <- subset(r, select = -c(r))
+  #write.csv(r,file=paste0(path.r, 'dat', j, '.csv'), row.names = F)
+  
+  ntilde = sum(dat$sc)
+  
+  cc <- subset(dat, select = -c(r))
+  for (m in 1:n){
+    if ((dat$sc[m]==1)|((dat$status[m]==1)&(dat$sc.case[m]==1))){
+      cc[m,c((p.full+1):p)] = cc[m,c((p.full+1):p)]
+    }else{
+      cc[m,c((p.full+1):p)] = NA
+    }
+  }
+  cc$weight = 1*(cc$status==1)*(cc$sc==1)+n/ntilde*(cc$status==0)*(cc$sc==1)+sum(dat$status*(1-dat$sc))/sum(dat$status*(1-dat$sc)*(dat$sc.case))*(cc$status==1)*(cc$sc==0)*(cc$sc.case==1)
+  cc <- subset(cc, select = -c(sc.case))
+  
+  write.csv(cc,file=paste0(path.cc, 'train', j, '.csv'), row.names = F)
+  
+  write.csv(test,file=paste0(path.test, 'test', j, '.csv'), row.names = F)
+  
+}
+
+mean(cenc)
+
