@@ -6,7 +6,7 @@ This repository contains computing codes for the paper "A Modified Random Surviv
 
 ## Installation Instruction for the Proposed Method
 
-* *Step 1* - Download the package source version by using 'download.packages("randomForestSRC", destdir = ".", type = "source")', which will create a file like 'randomForestSRC_3.6.0.tar.gz'
+* *Step 1* - Download the package source version by using `download.packages("randomForestSRC", destdir = ".", type = "source")', which will create a file like 'randomForestSRC_3.6.0.tar.gz'
 * *Step 2* - Extract the source using 'untar("randomForestSRC_3.6.0.tar.gz")', This creates a folder: 'randomForestSRC/'
 
 
