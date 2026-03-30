@@ -17,13 +17,13 @@ This repo contains the following folders, corresponding to the simulation codes 
 
 ## Installation Instruction for the Proposed Method
 
-* *Step 1* - Download the package source version by using `download.packages("randomForestSRC", destdir = ".", type = "source")`, which will create a file like 'randomForestSRC_3.6.0.tar.gz'
-* *Step 2* - Extract the source using 'untar("randomForestSRC_3.6.0.tar.gz")', This creates a folder: 'randomForestSRC/'
+The following steps must be taken before running the analysis code of the proposed method:
 
-
-
+* *Step 1* - Download the package source version by using `download.packages("randomForestSRC", destdir = ".", type = "source")`, which will create a file like `randomForestSRC_3.6.0.tar.gz`
+* *Step 2* - Extract the source using `untar("randomForestSRC_3.6.0.tar.gz")`, This creates a folder: `randomForestSRC/`
+* *Step 3* - Open the file: `file.edit("randomForestSRC/src/splitCustom.c")`, and then replace the content by the `splitCustom.c`. Note that it is needed to replace `#define CUSTOM_P 0.1` and `#define CUSTOM_Q 0.5` with the subcohort and supplemental case sampling fractions, respectively.
 
 ## References
 
-Li, H., Zhou, H., Couper, D., & Cai, J. (2025). Super learner for survival prediction in case-cohort and generalized case-cohort studies. Biometrics, 81(4), ujaf155.
+Li, H., Zhou, H., Couper, D., & Cai, J. (2025). A Modified Random Survival Forest for Improving Prediction Accuracy in Case-Cohort and Generalized Case-Cohort Studies. Manuscript Under Review.
 
