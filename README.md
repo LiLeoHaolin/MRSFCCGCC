@@ -8,12 +8,12 @@ This repository contains computing codes for the paper "A Modified Random Surviv
 
 ### Folders
 
-This repo contains the following folders, corresponding to the simulation codes for reproducing Section 4 of the paper. The names and descriptions of the folders are as follows,
+This repo contains the following folders, providing to the simulation codes for reproducing Section 4 of the paper. The names and descriptions of the folders are as follows,
 
 * *data generation* - this folder contains the code for simulating analysis datasets across 12 simulation settings considered in the Section 4 of the paper.
 * *analysis* - this folder contains the analysis code for three predictive models compared in the paper: the naive, weighted, and proposed approaches. The computing code therein corresponds to the simulation setting with linear covariate effect, Weibull survival time, and generalized case-cohort study.
 * *installation* - this folder contains the installation of the proposed splitting rule discussed in the paper (see detailed instruction below). 
-* *summary* -this folder contains the code for summarizing simulation results. Same code can be used for hyperparameter tuning in general settings.
+* *summary* -this folder contains the code for summarizing simulation results. Same code can be used for hyperparameter tuning of the proposed method in general settings.
 
 ## Installation Instruction for the Proposed Method
 
